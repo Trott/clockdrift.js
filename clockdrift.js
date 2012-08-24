@@ -91,6 +91,7 @@ if (argvLength < 4) {
 tolerance = parseInt(process.argv[2], 10);
 if (isNaN(tolerance)) {
     usage("tolerance must be a number");
+    return;
 }
 
 before = new Date().getTime();
