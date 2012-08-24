@@ -10,7 +10,7 @@ var http = require("http"),
     before,
     tolerance,
     i,
-    argvLength;
+    argvLength = process.argv.length;
 
 function usage( errorMessage ) {
     if (errorMessage) {
@@ -83,7 +83,7 @@ function dispatchRequest( targetUrl ) {
     }
 }
 
-if (process.argv.length < 4) {
+if (argvLength < 4) {
     usage();
     return;
 }
@@ -95,7 +95,6 @@ if (isNaN(tolerance)) {
 
 before = new Date().getTime();
 
-argvLength = process.argv.length;
 for (i = 3; i<argvLength; i++) {
     dispatchRequest(process.argv[i]);
 }
