@@ -30,20 +30,20 @@ function checkTime( host ) {
             diff;
 
         if (typeof res.headers.date !== "string") {
-            console.log( 'No date header returned by ' + host + '.');
+            console.log("No date header returned by " + host + ".");
             return;
         }
 
         clockTimestamp = new Date(res.headers.date).getTime();
         if (isNaN(clockTimestamp)) {
-            console.log( 'Could not convert date header from ' + host + ' to timestamp. (Malformed?)');
+            console.log("Could not convert date header from " + host + " to timestamp. (Malformed?)");
             return;
         }
 
         diff = Math.round((clockTimestamp - before) / 1000);
 
         if (Math.abs(diff) > tolerance) {
-            console.log('Clock at ' + host + ' is ' + diff + 's off from local clock.');
+            console.log("Clock at " + host + " is " + diff + "s off from local clock.");
         }
     };
 }
