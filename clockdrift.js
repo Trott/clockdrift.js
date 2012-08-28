@@ -14,12 +14,12 @@ var http = require("http"),
 
 function usage( errorMessage ) {
     if (errorMessage) {
-        console.log("\nError: " + errorMessage + ".\n");
+        console.error("\nError: " + errorMessage + ".\n");
     }
-    console.log("Usage: clockdrift.js tolerance url1 [url2 ...]");
-    console.log("    tolerance: number of seconds a timestamp can be off without being reported");
-    console.log("    url1 ...: URLs to inspect");
-    console.log("\nExample: clockdrift.js 15 http://tycho.usno.navy.mil/ http://www.example.com/");
+    console.error("Usage: clockdrift.js tolerance url1 [url2 ...]");
+    console.error("    tolerance: number of seconds a timestamp can be off without being reported");
+    console.error("    url1 ...: URLs to inspect");
+    console.error("\nExample: clockdrift.js 15 http://tycho.usno.navy.mil/ http://www.example.com/");
 }
 
 function checkTime( host ) {
@@ -30,13 +30,13 @@ function checkTime( host ) {
             diff;
 
         if (typeof res.headers.date !== "string") {
-            console.log("No date header returned by " + host + ".");
+            console.error("No date header returned by " + host + ".");
             return;
         }
 
         clockTimestamp = new Date(res.headers.date).getTime();
         if (isNaN(clockTimestamp)) {
-            console.log("Could not convert date header from " + host + " to timestamp. (Malformed?)");
+            console.error("Could not convert date header from " + host + " to timestamp. (Malformed?)");
             return;
         }
 
@@ -68,18 +68,18 @@ function dispatchRequest( targetUrl ) {
     if ( reqObj ) {
         req = reqObj.request( options, checkTime( options.host ));
         req.on("error", function(e) {
-            console.log("Error on " + options.host + ": " + e.message);
+            console.error("Error on " + options.host + ": " + e.message);
         });
         req.on("socket", function (socket) {
             socket.setTimeout(1000);
             socket.on("timeout", function() {
-                console.log("Error: Timeout. Hanging up.");
+                console.error("Socket timeout; hanging up.");
                 req.abort();
             });
         });
         req.end();
     } else {
-        console.log("Could not determine protocol: " + options.protocol);
+        console.error("Could not determine protocol: " + options.protocol);
     }
 }
 

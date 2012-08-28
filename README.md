@@ -9,9 +9,9 @@ Node script for detecting clock drift on remote web servers
 
 ## What is it?
 
-Shibboleth authentication via simpleSAMLphp broke on one of our apps when the system clock on the Shibboleth server drifted more than a minute into the future. This should never happen if you are running ntpd, but it looks like the Shib server was running ntpdate out of cron instead. 
+Shibboleth authentication via simpleSAMLphp broke on one of our apps when the system clock on the Shibboleth server drifted more than a minute into the future. 
 
-I am not the administrator of that machine and I don't know if they switched to ntpd. But it occured to me that even with no access to the server, I could detect clock drift by examining the date stamp in HTTP headers from the server.
+I am not the administrator of that machine and I don't know if they fixed whatever was causing the problem. But it occured to me that even with no access to the server, I could detect clock drift by examining the date stamp in HTTP headers from the server.
 
 So, I wrote this node script to use in a crontab.
 
