@@ -1,0 +1,32 @@
+{
+  "name": "clockdrift",
+  "description": "Use HTTP headers to see if servers have synchronized clocks or not",
+  "version": "1.0.0",
+  "homepage": "https://github.com/Trott/clockdrift.js",
+  "author": {
+    "name": "Rich Trott",
+    "email": "rtrott@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Trott/clockdrift.js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Trott/clockdrift.js/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/Trott/clockdrift.js/blob/master/LICENSE"
+    }
+  ],
+  "main": "clockdrift.js",
+  "engines": {
+    "node": "0.10"
+  },
+  "keywords": [],
+  "preferGlobal": true,
+  "bin": {
+    "clockdrift" : "clockdrift.js"
+  }
+}
