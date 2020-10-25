@@ -1,3 +1,15 @@
+# [3.0.0](https://github.com/Trott/clockdrift.js/compare/v2.0.0...v3.0.0) (2020-10-25)
+
+
+### Bug Fixes
+
+* exit with code when something goes wrong ([#5](https://github.com/Trott/clockdrift.js/issues/5)) ([5cca36a](https://github.com/Trott/clockdrift.js/commit/5cca36a3341926963657a0ac4ebc101f0211cc3c))
+
+
+### BREAKING CHANGES
+
+* drop support for Node.js 8.x
+
 # [2.0.0](https://github.com/Trott/clockdrift.js/compare/v1.0.0...v2.0.0) (2020-10-25)
 
 
