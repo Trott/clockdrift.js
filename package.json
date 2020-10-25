@@ -8,7 +8,7 @@
     "email": "rtrott@gmail.com"
   },
   "scripts": {
-    "test": "standard && c8 --check-coverage --lines 83 --functions 100 --branches 70 node test.js"
+    "test": "standard && c8 --check-coverage --lines 87 --functions 100 --branches 75 node test.js"
   },
   "repository": {
     "type": "git",
