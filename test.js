@@ -1,7 +1,8 @@
 'use strict'
 
 const assert = require('assert')
-const { spawnSync } = require('child_process')
+const { spawnSync, spawn } = require('child_process')
+const http = require('http')
 
 const usage =
   'Usage: clockdrift.js tolerance url1 [url2 ...]\n' +
@@ -10,13 +11,22 @@ const usage =
   '\n' +
   'Example: clockdrift.js 15 http://tycho.usno.navy.mil/ http://www.example.com/\n'
 
-const run = (args) => {
+const runSync = (args) => {
   return spawnSync('./clockdrift.js', args, { encoding: 'utf8' })
+}
+
+const run = (args, cb) => {
+  const subprocess = spawn('./clockdrift.js', args, { encoding: 'utf8' })
+  subprocess.on('error', (err) => {
+    assert.fail(err)
+  })
+  subprocess.on('exit', cb)
+  return subprocess
 }
 
 {
   // Using no arguments should return the usage message.
-  const ret = run([])
+  const ret = runSync([])
   assert.strictEqual(ret.stdout, '')
   assert.strictEqual(ret.stderr, usage)
   assert.strictEqual(ret.status, 1)
@@ -25,7 +35,7 @@ const run = (args) => {
 
 {
   // The tolerance argument must be a number.
-  const ret = run(['fhqwhgads', 'https://www.example.com/'])
+  const ret = runSync(['fhqwhgads', 'https://www.example.com/'])
   assert.strictEqual(ret.stdout, '')
   assert.strictEqual(ret.stderr, '\nError: tolerance must be a number.\n\n' + usage)
   assert.strictEqual(ret.status, 1)
@@ -34,13 +44,36 @@ const run = (args) => {
 
 {
   // Invalid hostnames.
-  const ret1 = run(['42', 'http://fhqwhgads.invalid/'])
-  const ret2 = run(['42', 'https://fhqwhgads.invalid/'])
+  const ret1 = runSync(['42', 'http://fhqwhgads.invalid/'])
+  const ret2 = runSync(['42', 'https://fhqwhgads.invalid/'])
   ;
   [ret1, ret2].forEach((ret) => {
     assert.strictEqual(ret.stdout, '')
     assert.ok(ret.stderr.startsWith('Error on fhqwhgads.invalid: getaddrinfo '), ret.stderr)
     assert.strictEqual(ret.status, 1)
     assert.strictEqual(ret.signal, null)
+  })
+}
+
+{
+  // Start an http server on localhost and test the happy path.
+  const server = http.createServer((req, res) => {
+    res.writeHead(200, {
+      'Content-Type': 'text/plain',
+      Date: (new Date()).toUTCString()
+    })
+    res.end('fhqwhgads')
+  })
+  server.listen(0, '127.0.0.1', () => {
+    const ret = run(
+      ['1', `http://127.0.0.1:${server.address().port}/`],
+      (code, signal) => {
+        ret.stdout.on('data', assert.fail)
+        ret.stderr.on('data', assert.fail)
+        assert.strictEqual(code, 0)
+        assert.strictEqual(signal, null)
+        server.close()
+      }
+    )
   })
 }
