@@ -84,16 +84,43 @@ const run = (args, cb) => {
     res.end('fhqwhgads')
   })
   server.listen(0, '127.0.0.1', () => {
+    const port = server.address().port
     const ret = run(
-      ['1', `http://127.0.0.1:${server.address().port}/`],
+      ['1', `http://127.0.0.1:${port}/`],
       (code, signal) => {
         ret.stdout.on('data', assert.fail)
         ret.stderr.on(
           'data',
           (msg) => {
-            assert.ok(msg.toString().startsWith(
-              'Could not convert date header from 127.0.0.1:'
-            ))
+            const expected = `Could not convert date header from 127.0.0.1:${port} to timestamp. (Malformed?)\n`
+            assert.strictEqual(msg.toString(), expected)
+          }
+        )
+        assert.strictEqual(code, 1)
+        assert.strictEqual(signal, null)
+        server.close()
+      }
+    )
+  })
+}
+
+{
+  // Test with a broken http server that does not send a Date header.
+  const server = http.createServer((req, res) => {
+    res.sendDate = false
+    res.end('fhqwhgads')
+  })
+  server.listen(0, '127.0.0.1', () => {
+    const port = server.address().port
+    const ret = run(
+      ['1', `http://127.0.0.1:${port}/`],
+      (code, signal) => {
+        ret.stdout.on('data', assert.fail)
+        ret.stderr.on(
+          'data',
+          (msg) => {
+            const expected = `No date header returned by 127.0.0.1:${port}.\n`
+            assert.strictEqual(msg.toString(), expected)
           }
         )
         assert.strictEqual(code, 1)
