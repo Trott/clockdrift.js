@@ -7,6 +7,9 @@
     "name": "Rich Trott",
     "email": "rtrott@gmail.com"
   },
+  "scripts": {
+    "test": "standard"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/Trott/clockdrift.js.git"
@@ -27,6 +30,9 @@
   "keywords": [],
   "preferGlobal": true,
   "bin": {
-    "clockdrift" : "clockdrift.js"
+    "clockdrift": "clockdrift.js"
+  },
+  "devDependencies": {
+    "standard": "^15.0.0"
   }
 }
