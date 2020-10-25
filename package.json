@@ -25,7 +25,7 @@
   ],
   "main": "clockdrift.js",
   "engines": {
-    "node": "0.10"
+    "node": ">=8.0.0"
   },
   "keywords": [],
   "preferGlobal": true,
