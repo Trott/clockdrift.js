@@ -16,7 +16,7 @@ const runSync = (args) => {
 }
 
 const run = (args, cb) => {
-  const subprocess = spawn('./clockdrift.js', args, { encoding: 'utf8' })
+  const subprocess = spawn('./clockdrift.js', args)
   subprocess.on('error', (err) => {
     assert.fail(err)
   })
@@ -58,10 +58,9 @@ const run = (args, cb) => {
 {
   // Start an http server on localhost and test the happy path.
   const server = http.createServer((req, res) => {
-    res.writeHead(200, {
-      'Content-Type': 'text/plain',
-      Date: (new Date()).toUTCString()
-    })
+    // res.writeHead(200, {
+    //   'Content-Type': 'text/plain',
+    // })
     res.end('fhqwhgads')
   })
   server.listen(0, '127.0.0.1', () => {
@@ -71,6 +70,33 @@ const run = (args, cb) => {
         ret.stdout.on('data', assert.fail)
         ret.stderr.on('data', assert.fail)
         assert.strictEqual(code, 0)
+        assert.strictEqual(signal, null)
+        server.close()
+      }
+    )
+  })
+}
+
+{
+  // Test with an http server that a malformed Date header.
+  const server = http.createServer((req, res) => {
+    res.setHeader('Date', 'fhqwhgads')
+    res.end('fhqwhgads')
+  })
+  server.listen(0, '127.0.0.1', () => {
+    const ret = run(
+      ['1', `http://127.0.0.1:${server.address().port}/`],
+      (code, signal) => {
+        ret.stdout.on('data', assert.fail)
+        ret.stderr.on(
+          'data',
+          (msg) => {
+            assert.ok(msg.toString().startsWith(
+              'Could not convert date header from 127.0.0.1:'
+            ))
+          }
+        )
+        assert.strictEqual(code, 1)
         assert.strictEqual(signal, null)
         server.close()
       }
