@@ -28,12 +28,14 @@ function checkTime (host) {
 
     if (typeof res.headers.date !== 'string') {
       console.error('No date header returned by ' + host + '.')
+      process.exitCode = 1
       return
     }
 
     clockTimestamp = new Date(res.headers.date).getTime()
     if (isNaN(clockTimestamp)) {
       console.error('Could not convert date header from ' + host + ' to timestamp. (Malformed?)')
+      process.exitCode = 1
       return
     }
 
@@ -67,29 +69,32 @@ function dispatchRequest (targetUrl) {
     req = reqObj.request(options, checkTime(options.host))
     req.on('error', function (e) {
       console.error('Error on ' + options.host + ': ' + e.message)
+      process.exitCode = 1
     })
     req.on('socket', function (socket) {
       socket.setTimeout(1000)
       socket.on('timeout', function () {
         console.error('Socket timeout; hanging up.')
+        process.exitCode = 1
         req.abort()
       })
     })
     req.end()
   } else {
     console.error('Could not determine protocol: ' + options.protocol)
+    process.exitCode = 1
   }
 }
 
 if (argvLength < 4) {
   usage()
-  process.exit()
+  process.exit(1)
 }
 
 tolerance = parseInt(process.argv[2], 10)
 if (isNaN(tolerance)) {
   usage('tolerance must be a number')
-  process.exit()
+  process.exit(1)
 }
 
 before = new Date().getTime()
