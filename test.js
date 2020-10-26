@@ -156,3 +156,31 @@ const run = (args, cb) => {
     )
   })
 }
+
+{
+  // Test with an http server that times out.
+  const server = http.createServer()
+  server.listen(0, '127.0.0.1', () => {
+    const port = server.address().port
+    const msgs = [
+      'Socket timeout; hanging up.\n',
+      `Error on 127.0.0.1:${port}: socket hang up\n`
+    ]
+    const ret = run(
+      ['1', `http://127.0.0.1:${port}/`],
+      (code, signal) => {
+        ret.stdout.on('data', assert.fail)
+        ret.stderr.on(
+          'data',
+          (msg) => {
+            const expected = msgs.shift()
+            assert.strictEqual(msg.toString(), expected)
+          }
+        )
+        assert.strictEqual(code, 1)
+        assert.strictEqual(signal, null)
+        server.close()
+      }
+    )
+  })
+}
