@@ -48,7 +48,7 @@ function checkTime (host) {
 }
 
 function dispatchRequest (targetUrl) {
-  var reqObj = false
+  var reqObj
   var options
   var req
 
@@ -87,7 +87,7 @@ function dispatchRequest (targetUrl) {
 }
 
 if (argvLength < 4) {
-  usage()
+  usage('')
   process.exit(1)
 }
 
