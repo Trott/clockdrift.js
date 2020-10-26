@@ -56,6 +56,15 @@ const run = (args, cb) => {
 }
 
 {
+  // Unrecognized protocol.
+  const ret = runSync(['1', 'fhqwhgads://'])
+  assert.strictEqual(ret.stdout, '')
+  assert.strictEqual(ret.stderr, 'Could not determine protocol: fhqwhgads:\n')
+  assert.strictEqual(ret.status, 1)
+  assert.strictEqual(ret.signal, null)
+}
+
+{
   // Start an http server on localhost and test the happy path.
   const server = http.createServer((req, res) => {
     res.end('fhqwhgads')
