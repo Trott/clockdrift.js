@@ -58,9 +58,6 @@ const run = (args, cb) => {
 {
   // Start an http server on localhost and test the happy path.
   const server = http.createServer((req, res) => {
-    // res.writeHead(200, {
-    //   'Content-Type': 'text/plain',
-    // })
     res.end('fhqwhgads')
   })
   server.listen(0, '127.0.0.1', () => {
@@ -68,6 +65,35 @@ const run = (args, cb) => {
       ['1', `http://127.0.0.1:${server.address().port}/`],
       (code, signal) => {
         ret.stdout.on('data', assert.fail)
+        ret.stderr.on('data', assert.fail)
+        assert.strictEqual(code, 0)
+        assert.strictEqual(signal, null)
+        server.close()
+      }
+    )
+  })
+}
+
+{
+  // Test with http server that has an inaccurate Date header.
+  const server = http.createServer((req, res) => {
+    res.writeHead(200, {
+      Date: new Date(Date.now() - 2000).toUTCString()
+    })
+    res.end('fhqwhgads')
+  })
+  server.listen(0, '127.0.0.1', () => {
+    const port = server.address().port
+    const ret = run(
+      ['1', `http://127.0.0.1:${port}/`],
+      (code, signal) => {
+        ret.stderr.on(
+          'data',
+          (msg) => {
+            const expected = `Clock at 127.0.0.1:${port} is -2s off from local clock.\n`
+            assert.strictEqual(msg.toString(), expected)
+          }
+        )
         ret.stderr.on('data', assert.fail)
         assert.strictEqual(code, 0)
         assert.strictEqual(signal, null)
