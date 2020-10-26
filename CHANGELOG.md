@@ -1,3 +1,15 @@
+# [4.0.0](https://github.com/Trott/clockdrift.js/compare/v3.0.0...v4.0.0) (2020-10-26)
+
+
+### chore
+
+* increase coverage requirement to 100% ([d1e0f08](https://github.com/Trott/clockdrift.js/commit/d1e0f0810e78def1043c1faf221abcdd7513ae0a))
+
+
+### BREAKING CHANGES
+
+* drop support for Node.js 10.x
+
 # [3.0.0](https://github.com/Trott/clockdrift.js/compare/v2.0.0...v3.0.0) (2020-10-25)
 
 
