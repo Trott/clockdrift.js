@@ -4,12 +4,10 @@
  * clockdrift.js by Rich Trott, (c) 2012 Regents of University of California, MIT License
  */
 
-var http = require('http')
-var https = require('https')
-var before
-var tolerance
-var i
-var argvLength = process.argv.length
+const http = require('http')
+const https = require('https')
+let i
+const argvLength = process.argv.length
 
 function usage (errorMessage) {
   if (errorMessage) {
@@ -23,23 +21,20 @@ function usage (errorMessage) {
 
 function checkTime (host) {
   return function (res) {
-    var clockTimestamp,
-      diff
-
     if (typeof res.headers.date !== 'string') {
       console.error('No date header returned by ' + host + '.')
       process.exitCode = 1
       return
     }
 
-    clockTimestamp = new Date(res.headers.date).getTime()
+    const clockTimestamp = new Date(res.headers.date).getTime()
     if (isNaN(clockTimestamp)) {
       console.error('Could not convert date header from ' + host + ' to timestamp. (Malformed?)')
       process.exitCode = 1
       return
     }
 
-    diff = Math.round((clockTimestamp - before) / 1000)
+    const diff = Math.round((clockTimestamp - before) / 1000)
 
     if (Math.abs(diff) > tolerance) {
       console.log('Clock at ' + host + ' is ' + diff + 's off from local clock.')
@@ -48,11 +43,10 @@ function checkTime (host) {
 }
 
 function dispatchRequest (targetUrl) {
-  var reqObj
-  var options
-  var req
+  let reqObj
+  let req
 
-  options = new URL(targetUrl)
+  const options = new URL(targetUrl)
   options.method = 'HEAD'
 
   switch (options.protocol) {
@@ -91,13 +85,13 @@ if (argvLength < 4) {
   process.exit(1)
 }
 
-tolerance = parseInt(process.argv[2], 10)
+const tolerance = parseInt(process.argv[2], 10)
 if (isNaN(tolerance)) {
   usage('tolerance must be a number')
   process.exit(1)
 }
 
-before = new Date().getTime()
+const before = new Date().getTime()
 
 for (i = 3; i < argvLength; i++) {
   dispatchRequest(process.argv[i])
