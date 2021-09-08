@@ -172,8 +172,8 @@ const run = (args, cb) => {
   server.listen(0, '127.0.0.1', () => {
     const port = server.address().port
     const msgs = [
-      'Socket timeout; hanging up.\n',
-      `Error on 127.0.0.1:${port}: socket hang up\n`
+      'Socket timeout; hanging up.',
+      `Error on 127.0.0.1:${port}: socket hang up`
     ]
     const ret = run(
       ['1', `http://127.0.0.1:${port}/`],
@@ -181,11 +181,18 @@ const run = (args, cb) => {
         ret.stdout.on('data', assert.fail)
         ret.stderr.on(
           'data',
-          (msg) => {
-            const expected = msgs.shift()
-            assert.strictEqual(msg.toString(), expected)
+          (chunk) => {
+            chunk.toString().split('\n').forEach((msg) => {
+              if (msg) {
+                const expected = msgs.shift()
+                assert.strictEqual(msg.toString(), expected)
+              }
+            })
           }
         )
+        ret.stderr.on('end', () => {
+          assert.deepStrictEqual(msgs, [])
+        })
         assert.strictEqual(code, 1)
         assert.strictEqual(signal, null)
         server.close()
