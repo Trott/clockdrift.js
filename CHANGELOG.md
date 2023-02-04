@@ -1,3 +1,10 @@
+## [4.0.1](https://github.com/Trott/clockdrift.js/compare/v4.0.0...v4.0.1) (2023-02-04)
+
+
+### Bug Fixes
+
+* require a valid certificate ([7cac352](https://github.com/Trott/clockdrift.js/commit/7cac3521c06da0cad74dffb71ceae3f9b9055ff0))
+
 # [4.0.0](https://github.com/Trott/clockdrift.js/compare/v3.0.0...v4.0.0) (2020-10-26)
 
 

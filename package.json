@@ -1,7 +1,7 @@
 {
   "name": "clockdrift",
   "description": "Use HTTP headers to see if servers have synchronized clocks or not",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "homepage": "https://github.com/Trott/clockdrift.js",
   "author": {
     "name": "Rich Trott",
