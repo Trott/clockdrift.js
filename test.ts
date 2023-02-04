@@ -69,6 +69,7 @@ const run = (args: readonly string[], cb: runCallback): ChildProcessWithoutNullS
 {
   // Start an http server on localhost and test the happy path.
   const server = http.createServer((req, res) => {
+    res.writeHead(200, { Connection: 'close' })
     res.end('fhqwhgads')
   })
   server.listen(0, '127.0.0.1', () => {
@@ -90,7 +91,8 @@ const run = (args: readonly string[], cb: runCallback): ChildProcessWithoutNullS
   // Test with http server that has an inaccurate Date header.
   const server = http.createServer((req, res) => {
     res.writeHead(200, {
-      Date: new Date(Date.now() - 2000).toUTCString()
+      Date: new Date(Date.now() - 2000).toUTCString(),
+      Connection: 'close'
     })
     res.end('fhqwhgads')
   })
@@ -120,6 +122,7 @@ const run = (args: readonly string[], cb: runCallback): ChildProcessWithoutNullS
   // Test with an http server that a malformed Date header.
   const server = http.createServer((req, res) => {
     res.setHeader('Date', 'fhqwhgads')
+    res.setHeader('Connection', 'close')
     res.end('fhqwhgads')
   })
   server.listen(0, '127.0.0.1', () => {
@@ -148,6 +151,7 @@ const run = (args: readonly string[], cb: runCallback): ChildProcessWithoutNullS
   // Test with a broken http server that does not send a Date header.
   const server = http.createServer((req, res) => {
     res.sendDate = false
+    res.writeHead(200, { Connection: 'close' })
     res.end('fhqwhgads')
   })
   server.listen(0, '127.0.0.1', () => {
