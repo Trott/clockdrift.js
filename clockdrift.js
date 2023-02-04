@@ -45,7 +45,6 @@ function dispatchRequest(targetUrl) {
             break;
         case 'https:':
             reqObj = https;
-            options.rejectUnauthorized = false;
             break;
     }
     if (reqObj != null) {
