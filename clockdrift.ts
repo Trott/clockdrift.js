@@ -46,7 +46,7 @@ function dispatchRequest (targetUrl: string): void {
   let reqObj
   let req: http.ClientRequest
 
-  const options = new URL(targetUrl) as URL & { method: string, rejectUnauthorized: boolean }
+  const options = new URL(targetUrl) as URL & { method: string }
   options.method = 'HEAD'
 
   switch (options.protocol) {
@@ -55,7 +55,6 @@ function dispatchRequest (targetUrl: string): void {
       break
     case 'https:':
       reqObj = https
-      options.rejectUnauthorized = false
       break
   }
 
