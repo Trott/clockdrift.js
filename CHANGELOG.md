@@ -1,3 +1,15 @@
+# [5.0.0](https://github.com/Trott/clockdrift.js/compare/v4.0.1...v5.0.0) (2023-06-15)
+
+
+### chore
+
+* drop support for Node.js < 16.x ([31b82e9](https://github.com/Trott/clockdrift.js/commit/31b82e998d6dac5f7ee4e4bfcce01eac1c24a305))
+
+
+### BREAKING CHANGES
+
+* Dropping support for Node.js prior to 16.x
+
 ## [4.0.1](https://github.com/Trott/clockdrift.js/compare/v4.0.0...v4.0.1) (2023-02-04)
 
 
