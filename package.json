@@ -41,7 +41,7 @@
     "clockdrift": "clockdrift.js"
   },
   "devDependencies": {
-    "@types/node": "^24.0.1",
+    "@types/node": "^25.0.2",
     "c8": "^10.1.2",
     "ts-standard": "^12.0.2",
     "typescript": "^5.0.2"
