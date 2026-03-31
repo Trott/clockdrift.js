@@ -140,7 +140,9 @@ const run = (args, cb) => {
 }
 {
     // Test with an http server that times out.
-    const server = http.createServer();
+    const server = http.createServer((req, res) => {
+        // Intentionally leave response open to trigger client timeout.
+    });
     server.listen(0, '127.0.0.1', () => {
         const addressInfo = server.address();
         const port = addressInfo.port;
