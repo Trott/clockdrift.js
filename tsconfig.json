@@ -3,6 +3,9 @@
     "declaration": true,
     "declarationMap": true,
     "module": "NodeNext",
+    "types": [
+      "node"
+    ],
     "strict": true
   }
 }

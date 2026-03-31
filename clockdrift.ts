@@ -60,11 +60,12 @@ function dispatchRequest (targetUrl: string): void {
 
   if (reqObj != null) {
     req = reqObj.request(options, checkTime(options.host))
-    req.on('error', function (e: Error) {
-      console.error(`Error on ${options.host}: ${e.message}`)
+    req.on('error', function (e: unknown) {
+      const message = e instanceof Error ? e.message : String(e)
+      console.error(`Error on ${options.host}: ${message}`)
       process.exitCode = 1
     })
-    req.on('socket', function (socket) {
+    req.on('socket', function (socket: import('node:net').Socket) {
       socket.setTimeout(1000)
       socket.on('timeout', function () {
         console.error('Socket timeout; hanging up.')

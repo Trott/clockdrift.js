@@ -50,7 +50,8 @@ function dispatchRequest(targetUrl) {
     if (reqObj != null) {
         req = reqObj.request(options, checkTime(options.host));
         req.on('error', function (e) {
-            console.error(`Error on ${options.host}: ${e.message}`);
+            const message = e instanceof Error ? e.message : String(e);
+            console.error(`Error on ${options.host}: ${message}`);
             process.exitCode = 1;
         });
         req.on('socket', function (socket) {
