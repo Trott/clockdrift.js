@@ -60,7 +60,7 @@ function dispatchRequest (targetUrl: string): void {
 
   if (reqObj != null) {
     req = reqObj.request(options, checkTime(options.host))
-    req.on('error', function (e) {
+    req.on('error', function (e: Error) {
       console.error(`Error on ${options.host}: ${e.message}`)
       process.exitCode = 1
     })
