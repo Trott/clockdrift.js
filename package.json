@@ -16,7 +16,8 @@
     "package.json"
   ],
   "scripts": {
-    "test": "ts-standard -p tsconfig.json && tsc && node test.js"
+    "lint": "eslint . --max-warnings=0",
+    "test": "npm run lint && tsc && node test.js"
   },
   "repository": {
     "type": "git",
@@ -33,7 +34,7 @@
   ],
   "main": "clockdrift.js",
   "engines": {
-    "node": ">=12.0.0"
+    "node": ">=22.13.0"
   },
   "keywords": [],
   "preferGlobal": true,
@@ -44,15 +45,11 @@
     "@semantic-release/changelog": "^7.0.0",
     "@semantic-release/git": "^11.0.1",
     "@types/node": "^26.0.0",
+    "eslint": "^10.12.0",
+    "neostandard": "^0.14.0",
     "semantic-release": "^25.0.1",
-    "ts-standard": "^12.0.2",
-    "typescript": "^6.0.2"
-  },
-  "ts-standard": {
-    "ignore": [
-      "**/*.js",
-      "**/*.d.ts"
-    ]
+    "typescript": "^6.0.2",
+    "typescript-eslint": "^8.71.2"
   },
   "release": {
     "branches": [
