@@ -1,3 +1,15 @@
+# [6.0.0](https://github.com/Trott/clockdrift.js/compare/v5.0.0...v6.0.0) (2026-10-13)
+
+
+### chore
+
+* migrate from ts-standard to neostandard ([#314](https://github.com/Trott/clockdrift.js/issues/314)) ([378556c](https://github.com/Trott/clockdrift.js/commit/378556c8e8528f7a35cd453b950da8b01349f947))
+
+
+### BREAKING CHANGES
+
+* support is now for Node.js 22 and above
+
 # [5.0.0](https://github.com/Trott/clockdrift.js/compare/v4.0.1...v5.0.0) (2023-06-15)
 
 
